@@ -1,0 +1,26 @@
+RUPSA SACCO - POLICIES
+
+Verified Policy Information
+
+The RUPSA SACCO website provides links and references to policies
+and terms relating to its services.
+
+For this AI project, only official policy documents supplied by
+RUPSA SACCO should be used as authoritative policy sources.
+
+Required Documents:
+- Membership Policy
+- Loan/Credit Policy
+- Savings Policy
+- Privacy Policy
+- Terms and Conditions
+- Benevolent Fund Policy
+- Data Protection/Privacy information
+- Any other current SACCO policy documents
+
+Verification Status:
+PENDING - Official policy documents should be obtained directly
+from RUPSA SACCO before the chatbot answers detailed policy questions.
+
+Important:
+The chatbot must not invent policy rules.
