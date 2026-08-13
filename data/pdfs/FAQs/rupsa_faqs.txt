@@ -80,3 +80,40 @@ USSD SERVICES INCLUDE:
 
 Source:
 Official RUPSA SACCO FAQ page.
+
+RUPSA SACCO - PAYMENT INFORMATION
+
+USSD:
+*879#
+
+M-PESA Paybill:
+834700
+
+Paybill Account:
+Use the member number as the account number.
+
+Bank Accounts:
+
+KCB Bank:
+1208683519
+Branch: Ruiru Branch
+
+Co-operative Bank:
+01100074554200
+Branch: Ruiru Branch
+
+Equity Bank:
+0870172350573
+Branch: Ruiru Branch
+
+Family Bank:
+024000032564
+Branch: Ruiru Branch
+
+Payment Allocation:
+If one payment covers multiple purposes, the member should email
+info@rupsasacco.com with their name, member number and instructions
+on how the amount should be allocated.
+
+Source:
+Official RUPSA SACCO Access page.
