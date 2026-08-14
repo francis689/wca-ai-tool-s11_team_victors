@@ -1,11 +1,10 @@
 from pathlib import Path
 from pypdf import PdfReader
 
+# Where the RUPSA SACCO knowledge-base files are stored
+DATA_FOLDER = Path("data/pdfs")
 
-# Where the RUPSA SACCO PDFs are stored
-PDF_FOLDER = Path("data/pdfs")
-
-# Where extracted text will be saved
+# Where processed text will be saved
 OUTPUT_FOLDER = Path("data/processed")
 
 
@@ -21,51 +20,73 @@ def extract_text_from_pdf(pdf_path):
         if text:
             pages_text.append(text)
         else:
-            print(f"Warning: No text found on page {page_number} of {pdf_path.name}")
+            print(
+                f"Warning: No text found on page "
+                f"{page_number} of {pdf_path.name}"
+            )
 
     return "\n\n".join(pages_text)
 
 
-def process_all_pdfs():
-    """Find and process every PDF inside data/pdfs."""
-    
+def process_text_file(txt_path):
+    """Read an existing TXT knowledge-base file."""
+    return txt_path.read_text(encoding="utf-8")
+
+
+def process_all_files():
+    """Find and process PDF and TXT files inside data/pdfs."""
+
     OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
 
-    pdf_files = list(PDF_FOLDER.rglob("*.pdf"))
+    pdf_files = list(DATA_FOLDER.rglob("*.pdf"))
+    txt_files = list(DATA_FOLDER.rglob("*.txt"))
 
     print(f"Found {len(pdf_files)} PDF files.")
-
-    if not pdf_files:
-        print("No PDF files found.")
-        return
+    print(f"Found {len(txt_files)} TXT files.")
 
     processed_count = 0
 
+    # Process PDF files
     for pdf_path in pdf_files:
         try:
-            print(f"Processing: {pdf_path}")
+            print(f"Processing PDF: {pdf_path}")
 
             text = extract_text_from_pdf(pdf_path)
 
-            # Keep the same folder structure as data/pdfs
-            relative_path = pdf_path.relative_to(PDF_FOLDER)
-
+            relative_path = pdf_path.relative_to(DATA_FOLDER)
             output_path = OUTPUT_FOLDER / relative_path.with_suffix(".txt")
 
             output_path.parent.mkdir(parents=True, exist_ok=True)
-
             output_path.write_text(text, encoding="utf-8")
 
             print(f"Saved: {output_path}")
-
             processed_count += 1
 
         except Exception as error:
             print(f"ERROR processing {pdf_path}: {error}")
 
+    # Process TXT files
+    for txt_path in txt_files:
+        try:
+            print(f"Processing TXT: {txt_path}")
+
+            text = process_text_file(txt_path)
+
+            relative_path = txt_path.relative_to(DATA_FOLDER)
+            output_path = OUTPUT_FOLDER / relative_path
+
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(text, encoding="utf-8")
+
+            print(f"Saved: {output_path}")
+            processed_count += 1
+
+        except Exception as error:
+            print(f"ERROR processing {txt_path}: {error}")
+
     print()
-    print(f"Finished processing {processed_count} PDF files.")
+    print(f"Finished processing {processed_count} files.")
 
 
 if __name__ == "__main__":
-    process_all_pdfs()
+    process_all_files()
