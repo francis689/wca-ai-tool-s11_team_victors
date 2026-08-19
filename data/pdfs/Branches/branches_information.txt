@@ -1,0 +1,23 @@
+RUPSA SACCO - BRANCH INFORMATION
+
+Main Office:
+PCEA Ruiru Plaza,
+Ruiru-Kamiti Road,
+Next to Ruiru Market.
+
+Branch Information:
+Additional branch information requires verification
+from RUPSA SACCO.
+
+Required information:
+- Branch name
+- Branch location
+- Branch telephone number
+- Opening hours
+- Services available
+
+Important:
+The chatbot must not invent branch information.
+
+Source:
+Official RUPSA SACCO website.
