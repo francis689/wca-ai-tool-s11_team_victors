@@ -1,9 +1,12 @@
 import json
 from pathlib import Path
+from datetime import datetime
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 KNOWLEDGE_DIR = BASE_DIR / "knowledge"
+
+HISTORY_FILE = BASE_DIR / "outputs" / "rupsa_sacco_history.txt"
 
 
 def load_knowledge(topic):
@@ -55,3 +58,31 @@ def prepare_stage2_analysis(stage1_output):
             ""
         )
     }
+
+
+def save_history(question, answer):
+    """
+    Automatically save each RUPSA question and answer.
+    """
+
+    HISTORY_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    timestamp = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+    with open(
+        HISTORY_FILE,
+        "a",
+        encoding="utf-8"
+    ) as file:
+
+        file.write("\n")
+        file.write("=" * 60 + "\n")
+        file.write(f"DATE: {timestamp}\n")
+        file.write(f"QUESTION: {question}\n")
+        file.write(f"ANSWER: {answer}\n")
+        file.write("=" * 60 + "\n")
