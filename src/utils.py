@@ -49,13 +49,4 @@ def export_text(data, filename="output.txt"):
 
     return filepath
 
-if __name__ == "__main__":
-    test_data = {
-        "inquiry_category": "Loans",
-        "target_amount": 300000,
-        "membership_status": "Active",
-        "detected_urgency": "High",
-        "key_variables_extracted": "Development loan"
-    }
-    print(prepare_stage2_analysis(test_data))
-
+   
