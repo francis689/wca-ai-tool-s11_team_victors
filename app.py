@@ -16,15 +16,15 @@ def main():
         print("Please enter a question.")
         return
 
-    print("\n🔎 Analyzing your question...")
-
     try:
+        print("\n🔎 Analyzing your question...")
+
         # Stage 1
         stage1_result = analyze_user_request(question)
 
-        print("\nStage 1 completed.")
+        print("✅ Stage 1 completed.")
 
-        # Convert Stage 1 output for Stage 2
+        # Prepare information for Stage 2
         stage1_data = json.loads(stage1_result)
         stage2_analysis = prepare_stage2_analysis(stage1_data)
 
@@ -38,14 +38,14 @@ def main():
 
         if final_response:
             print("\n======================================")
-            print("RUPSA SACCO RESPONSE")
+            print("       RUPSA SACCO RESPONSE")
             print("======================================")
             print(final_response)
 
-            # Automatically save question and answer
+            # Save the conversation
             save_history(question, final_response)
 
-            print("\n💾 Conversation saved to outputs/rupsa_sacco_history.txt")
+            print("\n💾 Conversation saved successfully.")
 
         else:
             print("\nUnable to generate a response.")
