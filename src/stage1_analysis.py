@@ -1,6 +1,6 @@
 import os
 import json
-from openai import OpenAI
+
 from google import genai
 from google.genai import types
 from pydantic import BaseModel  # <-- Direct Pydantic import to fix the error

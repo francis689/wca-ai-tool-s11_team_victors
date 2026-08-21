@@ -69,11 +69,9 @@ def generate_actionable_response(question, analysis):
 ROLE:
 
 You are the final RUPSA SACCO Virtual Assistant.
-
 Your role is to provide a clear, professional and
 useful response to the user's question using only
 verified RUPSA SACCO information.
-
 
 TASK:
 
@@ -88,7 +86,6 @@ facts, provide those steps to the user.
 If the information is unavailable, clearly tell the
 user that the information is not contained in the
 current RUPSA SACCO knowledge base.
-
 
 CONTEXT:
 
