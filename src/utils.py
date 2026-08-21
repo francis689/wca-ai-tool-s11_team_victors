@@ -1,5 +1,13 @@
 import json
 import os
+from pathlib import Path
+from datetime import datetime
+
+
+# Project directories
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUTS_DIR = BASE_DIR / "outputs"
+HISTORY_FILE = OUTPUTS_DIR / "rupsa_sacco_history.txt"
 
 
 def parse_json(data):
@@ -64,9 +72,9 @@ def handle_error(error):
 
 def export_json(data, filename="output.json"):
     """Export data to a JSON file."""
-    os.makedirs("outputs", exist_ok=True)
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    filepath = os.path.join("outputs", filename)
+    filepath = OUTPUTS_DIR / filename
 
     with open(filepath, "w", encoding="utf-8") as file:
         json.dump(
@@ -76,17 +84,43 @@ def export_json(data, filename="output.json"):
             ensure_ascii=False
         )
 
-    return filepath
+    return str(filepath)
 
 
 def export_text(data, filename="output.txt"):
     """Export data to a text file."""
-    os.makedirs("outputs", exist_ok=True)
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    filepath = os.path.join("outputs", filename)
+    filepath = OUTPUTS_DIR / filename
 
     with open(filepath, "w", encoding="utf-8") as file:
         file.write(str(data))
 
-    return filepath
+    return str(filepath)
 
+
+def save_history(question, answer):
+    """
+    Automatically save each RUPSA question and answer.
+    """
+    HISTORY_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    timestamp = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+    with open(
+        HISTORY_FILE,
+        "a",
+        encoding="utf-8"
+    ) as file:
+
+        file.write("\n")
+        file.write("=" * 60 + "\n")
+        file.write(f"DATE: {timestamp}\n")
+        file.write(f"QUESTION: {question}\n")
+        file.write(f"ANSWER: {answer}\n")
+        file.write("=" * 60 + "\n"
