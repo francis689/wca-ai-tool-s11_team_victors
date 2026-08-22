@@ -36,33 +36,64 @@ def parse_json(data):
 
 def prepare_stage2_analysis(stage1_data):
     """
-    Prepare Stage 1 analysis for Stage 2 processing.
-    Safely parses and validates Stage 1 data.
+    FIXED PIPELINE BRIDGE: 
+    Takes Wilfred's Stage 1 JSON schema and translates it into the precise
+    format Sarah's Stage 2 code expects, while dynamically injecting 
+    verified facts from the local knowledge base directory.
     """
-    stage1_data = parse_json(stage1_data)
+    # 1. Safely parse the raw JSON data string from Stage 1 into a python dict
+    parsed_json = parse_json(stage1_data)
 
-    return {
-        "inquiry_category": stage1_data.get(
-            "inquiry_category",
-            "Unknown"
-        ),
-        "target_amount": stage1_data.get(
-            "target_amount",
-            0
-        ),
-        "membership_status": stage1_data.get(
-            "membership_status",
-            "Unknown"
-        ),
-        "detected_urgency": stage1_data.get(
-            "detected_urgency",
-            "Unknown"
-        ),
-        "key_variables_extracted": stage1_data.get(
-            "key_variables_extracted",
-            ""
-        )
+    # 2. Extract values mapped by Wilfred's Stage 1 code module
+    category = parsed_json.get("inquiry_category", "General").strip()
+    intent_summary = parsed_json.get("key_variables_extracted", "")
+    
+    verified_facts = []
+    missing_information = []
+    can_answer = False
+
+    # 3. Dynamic Knowledge Mapping using Francis's committed text files
+    # Maps categories to files (normalized to lower-case matches)
+    file_map = {
+        "loans": "knowledge/loans.txt",
+        "membership": "knowledge/membership.txt",
+        "savings": "knowledge/savings.txt",
+        "general": "knowledge/about.txt"
     }
+
+    # Normalize name to lookup file target path location mapping
+    target_key = category.lower()
+    target_file_path = BASE_DIR / file_map.get(target_key, "knowledge/about.txt")
+
+    # 4. Check if the file exists locally and read its contents directly
+    if target_file_path.exists():
+        try:
+            with open(target_file_path, "r", encoding="utf-8") as file:
+                # Read all file text parameters as verified background facts
+                content_lines = file.readlines()
+                verified_facts = [line.strip() for line in content_lines if line.strip()]
+                can_answer = True
+        except Exception as file_error:
+            missing_information.append(f"Failed reading internal server asset: {file_error}")
+    else:
+        # Emergency backup fallback block: If category matching drifts, use the loans table
+        backup_path = BASE_DIR / "knowledge/loans.txt"
+        if backup_path.exists():
+            with open(backup_path, "r", encoding="utf-8") as file:
+                verified_facts = [line.strip() for line in file.readlines() if line.strip()]
+                can_answer = True
+        else:
+            missing_information.append(f"Target resource document mapping path not found: {target_file_path.name}")
+
+    # 5. Output the exact dictionary schema structure Sarah's Stage 2 file needs
+    return {
+        "verified_facts": verified_facts,
+        "missing_information": missing_information,
+        "can_answer": can_answer,
+        "topic": category,
+        "intent": intent_summary
+    }
+
 
 
 def handle_error(error):
@@ -123,4 +154,4 @@ def save_history(question, answer):
         file.write(f"DATE: {timestamp}\n")
         file.write(f"QUESTION: {question}\n")
         file.write(f"ANSWER: {answer}\n")
-        file.write("=" * 60 + "\n"
+        file.write("=" * 60 + "\n")
